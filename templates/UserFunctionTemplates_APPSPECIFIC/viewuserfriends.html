@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="flex flex-col justify-center  h-[100vh] w-[100vw] bg-black gap-[10px]" id="FULLCONTENT">
+        <div class="flex flex-row gap-[10px] ">
+            {% for i in friends %}
+                <div class="rounded-lg pl-[20px] pr-[20px] font-bold font-mono text-black bg-white flex flex-row">
+                    {{i.props['name']}}
+                </div>
+            {% endfor %}
+        </div>
+</div>
+
+{% endblock %}

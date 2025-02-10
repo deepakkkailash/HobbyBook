@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center  h-[100vh] w-[100vw] bg-black gap-[10px]" id="FULLCONTENT">
+    <div class="flex flex-row gap-[10px] ">
+        <a class="rounded-lg p-[40px] bg-purple-500 text-black font-mono font-bold animate-colorchangeWhitetoPurple" href="{{url_for('views.setProgressCheck')}}">Set a New Progress Check</a>
+        <a class="rounded-lg p-[40px] bg-white text-black font-mono font-bold animate-colorchangePurpletoWhite" href="{{url_for('views.seeProgressCheck')}}">See Progress Check</a>
+    </div>
+</div>
+
+{% endblock %}

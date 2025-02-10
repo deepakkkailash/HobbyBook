@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center bg-black  h-[100vh] w-[100vw]  gap-[10px] " id="FULLCONTENT">
+    <div class="flex flex-row justify-center gap-[10px] w-[100%]">
+            <input id='inpvalue' type="text" class="w-[50%] rounded-lg p-[20px] bg-white text-black font-bold font-mono" autocomplete="False">
+            <button id='searchbtn' class="flex flex-col items-center justify-center p-[10px] font-bold bg-green-500 text-white rounded-lg"><img src="{{url_for('static',filename='assets/SearchThings.png')}}" class="w-[30px] h-[30px] hover:animate-pulse"/></button>
+    </div>
+</div>
+
+<script>
+    let btn = document.getElementById('searchbtn');
+    let inpvalue = document.getElementById('inpvalue');
+    btn.addEventListener('click', async ()=>{
+        if(inpvalue.value==''){
+            alert('Please Enter a Hobby to search for');
+            return
+        }
+        else{
+                let obj = {}
+                obj.hobbyname= inpvalue.value;
+                let res = await fetch('{{url_for('methods.searchhobbydetails')}}',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(obj)
+        });
+                let data = await res.json();
+                console.log(data);
+                if(data.statusCode==200){
+
+                }
+                else{
+
+
+                }
+           }
+
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btnclass{
+    @apply flex flex-col items-center justify-center p-[10px] font-bold bg-green-500 text-white rounded-lg
+}
+
+.homepageimg{
+    @apply w-[80%] h-[80%] rounded-lg
+}

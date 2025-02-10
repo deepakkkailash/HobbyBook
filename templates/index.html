@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center h-[100vh] w-[100vw] bg-black">
+    <div class="flex flex-row gap-[10px]" id="content">
+        <div class="w-32 h-32  rounded-full bg-red-700 hover:animate-pulse font-bold text-white flex flex-col items-center justify-center">
+            <button id="loginbut" class="text-3xl font-mono ">Login</button>
+        </div>
+        <div class="w-32 h-32 p-[5px] rounded-full bg-green-700 hover:animate-pulse font-bold text-white flex flex-col items-center justify-center">
+            <button id="signupbut" class="text-3xl font-mono">Sign-Up</button>
+        </div>
+    </div>
+</div>
+<script>
+    let loginbut = document.getElementById('loginbut');
+    let signupbut = document.getElementById('signupbut');
+
+    let contentdiv = document.getElementById('content');
+    loginbut.addEventListener('click',async ()=>{
+       let res = await fetch('{{url_for('views.authview',what='login')}}',{
+            method:'GET'
+        })
+
+        let data = await res.text()
+        contentdiv.innerHTML = data;
+
+    })
+    signupbut.addEventListener('click',async ()=>{
+       let res = await fetch('{{url_for('views.authview',what='signup')}}',{
+            method:'GET'
+        })
+
+        let data = await res.text()
+        contentdiv.innerHTML = data;
+
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex flex-col w-[100vw] h-[100vh] justify-center items-center  bg-black">
+    <h1 class="text-purple-500 p-[80px] font-bold font-mono text-5xl w-[100%] h-[20%] "> Welcome <span class="animate-pulse"> {{props['name'] }} </span></h1>
+    <div class="flex flex-row justify-center  w-[100%] h-[80%]  ">
+
+    <div class="flex flex-col gap-[10px] justify-center items-center w-[30%] h-[100%]">
+        <a class="flex flex-col items-center rounded-lg p-[40px] w-[40%] h-[30%] bg-white" href="{{url_for('views.viewuserhobby')}}">
+            <h1  class="font-bold text-black">Your Hobbies</h1>
+            <img src="{{url_for('static',filename='assets/Hobbies.png')}}" alt="hobbies" class="homepageimg"/>
+        </a>
+        <a class=" flex flex-col items-center rounded-lg p-[40px] w-[40%] h-[30%] bg-white"  href="{{url_for('views.viewuserfriends')}}">
+            <h1 class="font-bold text-black">View Friends</h1>
+            <img src="{{url_for('static',filename='assets/Friends.png')}}" alt="hobbies" class="homepageimg" />
+        </a>
+
+    </div>
+    <div class="flex flex-col gap-[10px] justify-center items-center w-[30%] h-[100%]" >
+
+        <a class=" flex flex-col items-center rounded-lg p-[40px] w-[40%] h-[30%] bg-white"  href="{{url_for('views.viewuserprogress')}}">
+            <h1 class="font-bold text-black">Track Progress</h1>
+            <img src="{{url_for('static',filename='assets/Progress.png')}}" alt="hobbies"  class="homepageimg"/>
+        </a>
+        <a class=" flex flex-col items-center rounded-lg p-[40px] w-[40%] h-[30%] bg-white"  href="{{url_for('views.searchnewhobbies')}}">
+              <h1 class="font-bold text-black">Search new Hobbies</h1>
+            <img src="{{url_for('static',filename='assets/SearchThings.png')}}" alt="hobbies"  class="homepageimg"/>
+        </a>
+
+
+    </div>
+</div>
+
+
+</div>
+
+
+{% endblock %}

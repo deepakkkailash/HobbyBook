@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center bg-black  h-[100vh] w-[100vw]  gap-[10px] " id="FULLCONTENT">
+    {% if length==0 %}
+    <div class="flex flex-col items-center gap-[10px]">
+        <h1 class="text-red-500 font-bold text-5xl font-mono">No Hobbies have Progress Check Enabled</h1>
+        <p class="font-bold text-lg font-mono text-white">Click <a href="{{url_for('views.setProgressCheck')}}" class="animate-pulse text-red-500" >here</a> to set a new progress check on a hobby</p>
+    </div>
+    {% else %}
+        <div class="flex flex-col items-center gap-[10px]">
+        {% for i in hobbies %}
+            {% if i['progress']>=0.0 %}
+                        <h1 class="text-red-500 font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
+                        <p class="font-bold text-lg font-mono text-white">{{i['progress']}}</p>
+            {% endif %}
+
+            {% endfor %}
+            </div>
+    {% endif %}
+</div>
+
+{% endblock %}

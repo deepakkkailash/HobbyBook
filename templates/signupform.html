@@ -1,0 +1,15 @@
+<form class="flex flex-col items-center rounded-lg bg-slate-700 gap-[10px] p-[20px]" method="POST" action="{{url_for('auth.signup')}}">
+  <div class="flex flex-row gap-[10px]  items-center">
+        <label for="username" class="text-white font-mono font-bold">Username:</label>
+        <input type="text" class="bg-white p-[10px] rounded-lg text-black font-mono font-bold" name="username">
+  </div>
+    <div class="flex flex-row gap-[10px]  items-center">
+        <label for="password" class="text-white font-mono font-bold">Password:</label>
+        <input type="password" class="bg-white p-[10px] rounded-lg text-black font-mono font-bold" name="password">
+  </div>
+        <div class="flex flex-row gap-[40px]  items-center">
+        <label for="Name" class="text-white font-mono font-bold">Name:</label>
+        <input type="text" class="bg-white p-[10px] rounded-lg text-black font-mono font-bold" name="name">
+  </div>
+  <input type="submit" value="Hop in" class="btnclass">
+</form>
