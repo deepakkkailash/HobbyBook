@@ -3,13 +3,23 @@
 {% block content %}
 <form method="POST" action="{{url_for('methods.addHobby')}}" class="flex flex-col p-[40px] items-center gap-[10px] rounded-lg bg-white w-fit">
     <div class="flex flex-row gap-[10px] items-center">
-    <label class="text-white font-mono font-bold w-fit">Hobby Name:</label>
-    <select id="typeoptions" name="hobbyname" class="rounded-lg bg-black text-white font-bold font-mono p-[10px]">
-        <option selected disabled hidden></option>
-        {% for i in hobbies %}
-            <option>{{i}}</option>
-        {% endfor %}
-    </select>
+        <label class="text-white font-mono font-bold w-fit">Hobby Name:</label>
+        <select id="typeoptions" name="hobbyname" class="rounded-lg bg-black text-white font-bold font-mono p-[10px]">
+            <option selected disabled hidden></option>
+            {% for i in hobbies %}
+                <option>{{i}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="flex flex-col gap-[10px] items-center">
+        <label class="text-black font-mono font-bold w-fit">Set 5 Progress Levels</label>
+        <div class="flex flex-row gap-[5px] w-fit justify-around">
+                <input type="text" class="p-[10px] rounded-lg bg-stone-400 font-bold text-white font-mono" name="Progress1">
+                 <input type='text' class="p-[10px] rounded-lg bg-stone-500 font-bold text-white font-mono" name="Progress2">
+                 <input type='text' class="p-[10px] rounded-lg bg-stone-600 font-bold text-white font-mono" name="Progress3">
+                 <input type='text' class="p-[10px] rounded-lg bg-stone-700 font-bold text-white font-mono" name="Progress4">
+                 <input type='text' class="p-[10px] rounded-lg bg-stone-800 font-bold text-white font-mono" name="Progress5">
+        </div>
     </div>
 
     <input type="submit" class="flex flex-col items-center justify-center p-[10px] font-bold bg-green-500 text-white rounded-lg w-fit" value="add"/>

@@ -36,7 +36,7 @@
         setInterval(()=>{
             console.log('interval');
             if(index==hobbies.length){
-                return
+                index = 0
             }else{
 
             hobbyspacediv.innerHTML = `<h1 class="font-mono text-5xl text-white font-bold tracking-widest">${hobbies[index].hobbyname}</h1>

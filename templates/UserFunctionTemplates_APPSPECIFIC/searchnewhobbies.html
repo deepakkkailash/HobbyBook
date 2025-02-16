@@ -11,6 +11,7 @@
 <script>
     let btn = document.getElementById('searchbtn');
     let inpvalue = document.getElementById('inpvalue');
+    let content = document.getElementById('FULLCONTENT');
     btn.addEventListener('click', async ()=>{
         if(inpvalue.value==''){
             alert('Please Enter a Hobby to search for');
@@ -29,11 +30,14 @@
                 let data = await res.json();
                 console.log(data);
                 if(data.statusCode==200){
-
+                      content.innerHTML = `<h1 class="font-mono text-5xl text-white font-bold tracking-widest">${data.hobbydetails.hobbyname}</h1>
+                        <h2 class='font-mono text-lg text-red-500 font-bold'>${data.hobbydetails.hobbytype}</h2>
+                        <h4 class='font-mono text-sm text-white font-bold'>Number of users: ${data.hobbydetails.numberOfUsers}</h4>
+            `;
                 }
                 else{
-
-
+                    alert('Not a valid hobby');
+                    location.reload();
                 }
            }
 

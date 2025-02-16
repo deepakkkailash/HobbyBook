@@ -12,12 +12,29 @@
         {% for i in hobbies %}
             {% if i['progress']>=0.0 %}
                         <h1 class="text-red-500 font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
-                        <p class="font-bold text-lg font-mono text-white">{{i['progress']}}</p>
+                        <button id="{{i['hobbyname']}}" class="UpdateProgressBtn" class="font-bold text-lg font-mono text-white">{{i['progress']}}</button>
             {% endif %}
 
             {% endfor %}
             </div>
     {% endif %}
 </div>
+
+<script>
+    let updateProgressButtons = document.getElementsByClassName('UpdateProgressBtn');
+    for(const i of updateProgressButtons){
+            i.addEventListener('click',(event)=>{
+                let div = document.createElement('div');
+                let targethobby = event.target.id;
+                div.classList.add('flex','flex-col','items-center','gap-[10px]','bg-white','p-[50px]','rounded-lg','w-[80vw]','h-[50vh]');
+
+                let title = document.createElement('h1');
+                title.classList.add('font-lg','font-mono','text-black');
+                title.innerText= `Update Progress for ${targethobby}`;
+
+
+            })
+    }
+</script>
 
 {% endblock %}

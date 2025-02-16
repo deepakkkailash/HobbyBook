@@ -8,8 +8,8 @@ methods = Blueprint('methods',__name__)
 @methods.route('/addHobbyforUser',methods=['POST'])
 @login_required
 def addHobby():
-    data = request.form
-    current_user.addHobbies(data['hobbyname'])
+    data = request.form.values()
+    current_user.addHobbies(data[0],data[1:]);
     return redirect(url_for('views.viewuserhobby'));
 
 
