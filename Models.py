@@ -80,10 +80,11 @@ class User(UserMixin):
         del conn
         return hobbies
 
-    def addHobbies(self,hobbyname):
+    def addHobbies(self,hobbyname,milestones):
         conn = Connect()
         cursor = conn.getcursor()
-        cursor.execute('Insert into user_hobbies(username,hobbyname,progress,isprogresscheckActive) values(?,?,?,?)',(self.props['username'],hobbyname,0,0))
+        milestone1,milestone2,milestone3,milestone4,milestone5 = milestones
+        cursor.execute('Insert into user_hobbies(username,hobbyname,progress,isprogresscheckActive,milestone1,milestone2,milestone3,milestone4,milestone5) values(?,?,?,?,?,?,?,?,?)',(self.props['username'],hobbyname,0,0,milestone1,milestone2,milestone3,milestone4,milestone5))
         conn.commit()
         del conn
         return 200
@@ -162,3 +163,9 @@ class Hobby:
         return details
 
 
+
+conn = Connect()
+cursor = conn.getcursor()
+cursor.execute('PRAGMA table_info(USER_HOBBIES)');
+print([dict(i) for i in cursor.fetchall()])
+del conn
