@@ -12,7 +12,7 @@
         {% for i in hobbies %}
             {% if i['progress']>=0.0 %}
                         <h1 class="text-red-500 font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
-                        <button id="{{i['hobbyname']}}" class="UpdateProgressBtn" class="font-bold text-lg font-mono text-white">{{i['progress']}}</button>
+                        <button id="{{i['hobbyname']}}"class=" UpdateProgressBtn font-bold text-lg font-mono text-white">{{i['progress']}}</button>
 
             {% endif %}
 
@@ -34,9 +34,15 @@
                 title.classList.add('font-lg','font-mono','text-black');
                 title.innerText= `Update Progress for ${targethobby}`;
 
-                let res = await fetch(`{{url_for('methods.getmilestones',hobbyname=${targethobby})}}`,{
-                    method:'GET'
-                }
+                let obj = {}
+                obj.hobbyname = targethobby
+                let res = await fetch(`{{url_for('methods.getmilestones')}}`,{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify(obj)
+                });
 
                 let data = await res.json()
 
@@ -48,7 +54,7 @@
                 for(const i of milestones){
                         let index = milestones.indexOf(i);
                         let temp = document.createElement('div');
-                        temp.classList.add('rounded-lg',`bg-stone-${300+index*100}`);
+                        temp.classList.add('rounded-lg',`bg-stone-[${300+index*100}]`);
                         temp.innerText = milestone;
                         divofrows.appendChild(temp);
                 }

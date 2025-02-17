@@ -122,6 +122,17 @@ class User(UserMixin):
         del conn
         return 200
 
+    def getMilestones(self,hobby):
+        conn = Connect()
+        cursor = conn.getcursor()
+        cursor.execute('SELECT milestone1,milestone2,milestone3,milestone4,milestone5 from user_hobbies where username=? and hobbyname=?',(self.props['username'],hobby))
+        res = cursor.fetchone()
+        print(dict(res))
+
+        del conn
+        return dict(res)
+
+
 class Hobby:
     def __init__(self):
         None
