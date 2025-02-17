@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="flex flex-col w-[100vw] h-[100vh] justify-center items-center  bg-black">
-    <h1 class="text-purple-500 p-[80px] font-bold font-mono text-5xl w-[100%] h-[20%] "> Welcome <span class="animate-pulse"> {{props['name'] }} </span></h1>
+<div class="flex flex-col w-[100vw] h-[100vh] justify-center items-center  bg-black" id="fullcontent">
+    <h1 class="text-purple-500 p-[80px] font-bold font-mono text-5xl w-[100%] h-[20%] "> Welcome <span id='profile' class="animate-pulse"> {{props['name'] }} </span></h1>
     <div class="flex flex-row justify-center  w-[100%] h-[80%]  ">
 
     <div class="flex flex-col gap-[10px] justify-center items-center w-[30%] h-[100%]">
@@ -33,5 +33,43 @@
 
 </div>
 
+<script>
+    let profile = document.getElementById('profile');
+    profile.addEventListener('click',()=>{
+        let user_props = {{props|tojson}};
+        let div = document.createElement('div');
+        let fullcontent = document.getElementById('fullcontent');
+        div.classList.add('flex','flex-col','gap-[10px]','bg-white','font-bold','font-mono','text-black','items-center','w-fit','p-[20px]','rounded-lg');
+        for (let i in user_props){
+            let temp = document.createElement('p');
+            temp.innerText = `${i}:${user_props[i]}`
+            div.appendChild(temp);
+        }
+        let goback = document.createElement('button');
+        goback.classList.add('btnclass');
+        goback.innerText = 'close'
+        let children = fullcontent.children;
 
+        goback.addEventListener('click',()=>{
+            for(const i of children){
+               if(i!=div){
+                 i.style.removeProperty('filter');
+
+               }
+            }
+
+            fullcontent.removeChild(div);
+        })
+        div.appendChild(goback);
+
+         for(const i of children){
+               if(i!=div){
+                 i.style.filter = 'blur(8px)';
+            }
+          }
+        fullcontent.appendChild(div);
+
+
+    })
+</script>
 {% endblock %}

@@ -8,15 +8,15 @@ class Connect:
         conn= sqlite3.connect('hobbybook.db')
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
-        self.conn = conn
-        self.cursor = cursor
+        self.__conn = conn
+        self.__cursor = cursor
 
     def getcursor(self):
-        return self.cursor
+        return self.__cursor
     def commit(self):
-        self.conn.commit()
+        self.__conn.commit()
     def __del__(self):
-        self.conn.close()
+        self.__conn.close()
 
 class User(UserMixin):
     def __init__(self,props):
@@ -35,8 +35,8 @@ class User(UserMixin):
         if (bcrypt.checkpw(password,  out['password'])):
             outputdict = {
                 'username':  out['username'],
-                'password':  out['password'],
                 'name':  out['name'],
+                'noofhobbies': out['NOOFHOBBIES']
             }
 
             login_user(User(props=outputdict))
@@ -53,9 +53,9 @@ class User(UserMixin):
         conn = Connect()
         cursor = conn.getcursor()
         try:
-            cursor.execute('INSERT INTO USERS(username,name,password) values(?,?,?)',(username,name,bcrypt.hashpw(password,salt=bcrypt.gensalt())))
+            cursor.execute('INSERT INTO USERS(username,name,password,NOOFHOBBIES) values(?,?,?,?)',(username,name,bcrypt.hashpw(password,salt=bcrypt.gensalt()),0))
             conn.commit()
-            login_user(User(props={'username':username,'name':name,'password':password}))
+            login_user(User(props={'username':username,'name':name,'noofhobbies':0}))
             return 200
         except Exception:
                 return 500
@@ -68,8 +68,13 @@ class User(UserMixin):
         cursor = conn.getcursor()
         cursor.execute('SELECT * from Users where username=?',(username,))
         res= dict(cursor.fetchone())
+        outputdict = {
+            'username': res['username'],
+            'name': res['name'],
+            'noofhobbies':res['NOOFHOBBIES']
+        }
         del conn
-        return User(props=res)
+        return User(props=outputdict)
 
     def getHobbies(self):
         conn = Connect()
@@ -164,8 +169,7 @@ class Hobby:
 
 
 
-conn = Connect()
-cursor = conn.getcursor()
-cursor.execute('PRAGMA table_info(USER_HOBBIES)');
-print([dict(i) for i in cursor.fetchall()])
-del conn
+
+
+
+

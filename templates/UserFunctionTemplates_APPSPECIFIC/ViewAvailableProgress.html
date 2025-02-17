@@ -13,6 +13,7 @@
             {% if i['progress']>=0.0 %}
                         <h1 class="text-red-500 font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
                         <button id="{{i['hobbyname']}}" class="UpdateProgressBtn" class="font-bold text-lg font-mono text-white">{{i['progress']}}</button>
+
             {% endif %}
 
             {% endfor %}
@@ -22,8 +23,9 @@
 
 <script>
     let updateProgressButtons = document.getElementsByClassName('UpdateProgressBtn');
+    let contentdiv = document.getElementById('FULLCONTENT');
     for(const i of updateProgressButtons){
-            i.addEventListener('click',(event)=>{
+            i.addEventListener('click', async (event)=>{
                 let div = document.createElement('div');
                 let targethobby = event.target.id;
                 div.classList.add('flex','flex-col','items-center','gap-[10px]','bg-white','p-[50px]','rounded-lg','w-[80vw]','h-[50vh]');
@@ -32,6 +34,29 @@
                 title.classList.add('font-lg','font-mono','text-black');
                 title.innerText= `Update Progress for ${targethobby}`;
 
+                let res = await fetch(`{{url_for('methods.getmilestones',hobbyname=${targethobby})}}`,{
+                    method:'GET'
+                }
+
+                let data = await res.json()
+
+                let milestones = Array.from(data.milestones);
+
+                let divofrows = document.createElement('div');
+                divofrows.classList.add('flex','flex-row','gap-[10px]','w-fit');
+
+                for(const i of milestones){
+                        let index = milestones.indexOf(i);
+                        let temp = document.createElement('div');
+                        temp.classList.add('rounded-lg',`bg-stone-${300+index*100}`);
+                        temp.innerText = milestone;
+                        divofrows.appendChild(temp);
+                }
+
+                div.appendChild(title);
+                div.appendChild(divofrows);
+                contentdiv.innerHTML = '';
+                contentdiv.appendChild(div);
 
             })
     }

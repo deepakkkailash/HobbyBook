@@ -8,7 +8,7 @@ methods = Blueprint('methods',__name__)
 @methods.route('/addHobbyforUser',methods=['POST'])
 @login_required
 def addHobby():
-    data = request.form.values()
+    data = list(request.form.values())
     current_user.addHobbies(data[0],data[1:]);
     return redirect(url_for('views.viewuserhobby'));
 
@@ -38,3 +38,10 @@ def searchhobbydetails():
         output = {'statusCode': 500, 'hobbydetails': 'No Hobby Found'}
 
     return json.dumps(output)
+
+
+@methods.route('/getMilestones/<hobbyname>')
+@login_required
+def getmilestones(hobbyname):
+    milestones = current_user.getMilestones(hobbyname)
+    return json.dumps({milestones:milestones})
