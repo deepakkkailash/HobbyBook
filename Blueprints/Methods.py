@@ -8,7 +8,8 @@ methods = Blueprint('methods',__name__)
 @methods.route('/addHobbyforUser',methods=['POST'])
 @login_required
 def addHobby():
-    data =dict(request.form).values()
+    data =list(request.form.values())
+    print(data)
     current_user.addHobbies(data[0],data[1:]);
     return redirect(url_for('views.viewuserhobby'));
 
@@ -46,6 +47,18 @@ def getmilestones():
     data = request.json
     hobbyname = data['hobbyname']
     print(hobbyname)
-    milestones = current_user.getMilestones(hobbyname)
-    return json.dumps(milestones)
+    milestones = current_user.getMilestones(hobbyname)['MILESTONES'].split(',')
+    return json.dumps({'milestones':milestones})
 
+
+@methods.route('/updateprogressformilestones',methods=['POST'])
+@login_required
+def updatemilestoneprogress():
+    form = request.json
+    milestone_progress = form['milestones'][0]
+    print(milestone_progress)
+    target_hobby = form['targethobby']
+    if(current_user.updateMilestones(milestone_progress,target_hobby)):
+        return json.dumps({'statuscode':200})
+    else:
+        return json.dumps({'statuscode':500})

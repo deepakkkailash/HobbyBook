@@ -558,14 +558,6 @@ video {
   position: static;
 }
 
-.left-\[30\%\] {
-  left: 30%;
-}
-
-.top-\[40\%\] {
-  top: 40%;
-}
-
 .block {
   display: block;
 }
@@ -638,10 +630,6 @@ video {
   width: 40%;
 }
 
-.w-\[40px\] {
-  width: 40px;
-}
-
 .w-\[45vw\] {
   width: 45vw;
 }
@@ -661,10 +649,6 @@ video {
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
-}
-
-.w-\[80px\] {
-  width: 80px;
 }
 
 @keyframes colorchangePurpletoWhite {
@@ -924,6 +908,10 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
+.opacity-\[0\.5\] {
+  opacity: 0.5;
+}
+
 .blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -961,6 +949,10 @@ video {
 
 .hover\:animate-pulse:hover {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.hover\:cursor-pointer:hover {
+  cursor: pointer;
 }
 
 .hover\:shadow-md:hover {

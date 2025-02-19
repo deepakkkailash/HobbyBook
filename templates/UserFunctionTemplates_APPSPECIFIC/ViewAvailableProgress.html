@@ -24,15 +24,45 @@
 <script>
     let updateProgressButtons = document.getElementsByClassName('UpdateProgressBtn');
     let contentdiv = document.getElementById('FULLCONTENT');
+
+
     for(const i of updateProgressButtons){
             i.addEventListener('click', async (event)=>{
+                 let targethobby = event.target.id;
+                let milestones_completed= []
+                const updateMilestones = async ()=>{
+                    milestones_completed = milestones_completed.map((item)=>{
+                        return item.replace('MILESTONE','');
+                    });
+                    let bodyObj = {}
+                    bodyObj.milestones = milestones_completed;
+                    bodyObj.targethobby = targethobby
+                    let res = await fetch('{{url_for('methods.updatemilestoneprogress')}}',{
+                        method:'POST',
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body:JSON.stringify(bodyObj)
+                    })
+
+                    let data = await res.json();
+
+                    if(data.statuscode==200){
+                        alert('Updated Progress Successfully');
+                    }
+                    else{
+                        alert('Some Problem');
+                    }
+                    location.reload();
+                }
                 let div = document.createElement('div');
-                let targethobby = event.target.id;
+
                 div.classList.add('flex','flex-col','items-center','gap-[10px]','bg-white','p-[50px]','rounded-lg','w-[80vw]','h-[50vh]');
 
                 let title = document.createElement('h1');
                 title.classList.add('font-lg','font-mono','text-black');
                 title.innerText= `Update Progress for ${targethobby}`;
+
 
                 let obj = {}
                 obj.hobbyname = targethobby
@@ -52,15 +82,37 @@
                 divofrows.classList.add('flex','flex-row','gap-[10px]','w-fit');
 
                 for(const i of milestones){
+                        console.log(i);
                         let index = milestones.indexOf(i);
                         let temp = document.createElement('div');
-                        temp.classList.add('rounded-lg',`bg-stone-[${300+index*100}]`);
-                        temp.innerText = milestone;
+                        temp.id =   `MILESTONE${index+1}`;
+                        temp.classList.add('rounded-lg',`bg-stone-${400+index*100}`,'p-[10px]','hover:cursor-pointer');
+                        temp.innerText = i;
                         divofrows.appendChild(temp);
+                        temp.addEventListener('click',()=>{
+                            if(milestones_completed.length>=1){
+                                alert('You can push a max of 1 milestone at a time');
+                                return;
+                            }
+                            else{
+                                    temp.classList.add('opacity-[0.5]');
+                                    milestones_completed.push(temp.id);
+                            }
+
+                        });
                 }
 
                 div.appendChild(title);
                 div.appendChild(divofrows);
+
+                let complete_progress_update_button= document.createElement('button');
+                complete_progress_update_button.classList.add('btnclass');
+                complete_progress_update_button.innerText = `Update Progress`;
+                complete_progress_update_button.addEventListener('click',()=>{
+                    updateMilestones();
+                })
+                div.appendChild(complete_progress_update_button);
+
                 contentdiv.innerHTML = '';
                 contentdiv.appendChild(div);
 

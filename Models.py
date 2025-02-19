@@ -125,14 +125,36 @@ class User(UserMixin):
     def getMilestones(self,hobby):
         conn = Connect()
         cursor = conn.getcursor()
-        cursor.execute('SELECT milestone1,milestone2,milestone3,milestone4,milestone5 from user_hobbies where username=? and hobbyname=?',(self.props['username'],hobby))
+
+        cursor.execute('''
+    SELECT 
+        CASE 
+            WHEN PROGRESS = 0 THEN milestone1 || ',' || milestone2 || ',' || milestone3 || ',' || milestone4 || ',' || milestone5
+            WHEN PROGRESS = 20 THEN milestone2 || ',' || milestone3 || ',' || milestone4 || ',' || milestone5
+            WHEN PROGRESS = 40 THEN milestone3 || ',' || milestone4 || ',' || milestone5
+            WHEN PROGRESS = 60 THEN milestone4 || ',' || milestone5
+            WHEN PROGRESS = 80 THEN milestone5
+        END AS MILESTONES
+    FROM user_hobbies 
+    WHERE username = ? AND hobbyname = ?
+''', (self.props['username'], hobby))
         res = cursor.fetchone()
         print(dict(res))
 
         del conn
         return dict(res)
 
-
+    def updateMilestones(self,milestone_progress,target_hobby):
+        try:
+            conn = Connect()
+            cursor = conn.getcursor()
+            prog = int(milestone_progress)*20
+            print(prog)
+            cursor.execute('UPDATE USER_HOBBIES SET PROGRESS=PROGRESS+? WHERE USERNAME=? AND HOBBYNAME=?',(prog,self.props['username'],target_hobby))
+            conn.commit()
+            return True
+        except BaseException:
+            return False
 class Hobby:
     def __init__(self):
         None
@@ -177,10 +199,3 @@ class Hobby:
         details['hobbytype'] = dict(res[0])['hobbytype']
         del conn
         return details
-
-
-
-
-
-
-
