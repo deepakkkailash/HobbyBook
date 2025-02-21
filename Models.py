@@ -89,7 +89,7 @@ class User(UserMixin):
         conn = Connect()
         cursor = conn.getcursor()
         milestone1,milestone2,milestone3,milestone4,milestone5 = milestones
-        cursor.execute('Insert into user_hobbies(username,hobbyname,progress,isprogresscheckActive,milestone1,milestone2,milestone3,milestone4,milestone5) values(?,?,?,?,?,?,?,?,?)',(self.props['username'],hobbyname,0,0,milestone1,milestone2,milestone3,milestone4,milestone5))
+        cursor.execute('Insert into user_hobbies(username,hobbyname,progress,isprogresscheckActive,milestone1,milestone2,milestone3,milestone4,milestone5,HOBBYCOMPLETED) values(?,?,?,?,?,?,?,?,?,?)',(self.props['username'],hobbyname,0,0,milestone1,milestone2,milestone3,milestone4,milestone5,'No'))
         conn.commit()
         del conn
         return 200
@@ -151,7 +151,18 @@ class User(UserMixin):
             cursor = conn.getcursor()
             prog = int(milestone_progress)*20
             print(prog)
-            cursor.execute('UPDATE USER_HOBBIES SET PROGRESS=PROGRESS+? WHERE USERNAME=? AND HOBBYNAME=?',(prog,self.props['username'],target_hobby))
+            cursor.execute('''
+            UPDATE USER_HOBBIES SET HOBBYCOMPLETED=
+             CASE 
+                WHEN PROGRESS=80.0 THEN 'COMPLETED'
+                ELSE 'ONGOING'
+            END,
+            PROGRESS=
+            CASE
+                WHEN PROGRESS<=80.0 THEN PROGRESS+?
+                ELSE 100.0
+            END
+                WHERE USERNAME=? AND HOBBYNAME=?''',(prog,self.props['username'],target_hobby))
             conn.commit()
             return True
         except BaseException:
@@ -202,3 +213,8 @@ class Hobby:
         return details
 
 
+conn = Connect()
+cursor = conn.getcursor()
+cursor.execute('SELECT * FROM USERS INNER JOIN USER_HOBBIES ON USERS.USERNAME=USER_HOBBIES.USERNAME')
+for i in cursor.fetchall():
+    print(dict(i))
