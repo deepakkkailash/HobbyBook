@@ -47,7 +47,11 @@ def getmilestones():
     data = request.json
     hobbyname = data['hobbyname']
     print(hobbyname)
-    milestones = current_user.getMilestones(hobbyname)['MILESTONES'].split(',')
+    milestones = current_user.getMilestones(hobbyname)['MILESTONES']
+    if(milestones==None):
+        return json.dumps({'milestones':'NotFound'})
+    else:
+        milestones = milestones.split(',')
     return json.dumps({'milestones':milestones})
 
 

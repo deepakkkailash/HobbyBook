@@ -134,6 +134,7 @@ class User(UserMixin):
             WHEN PROGRESS = 40 THEN milestone3 || ',' || milestone4 || ',' || milestone5
             WHEN PROGRESS = 60 THEN milestone4 || ',' || milestone5
             WHEN PROGRESS = 80 THEN milestone5
+            
         END AS MILESTONES
     FROM user_hobbies 
     WHERE username = ? AND hobbyname = ?
@@ -199,3 +200,5 @@ class Hobby:
         details['hobbytype'] = dict(res[0])['hobbytype']
         del conn
         return details
+
+

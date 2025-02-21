@@ -76,6 +76,16 @@
 
                 let data = await res.json()
 
+                if(data.milestones=='NotFound'){
+                        let nonefound = document.createElement('h1');
+                        nonefound.classList.add('font-mono','font-bold','text-green-500', 'text-lg');
+                        nonefound.innerText = 'Hooray No Milestone Lefttttttt';
+                        div.appendChild(nonefound);
+
+                }
+                else{
+
+
                 let milestones = Array.from(data.milestones);
 
                 let divofrows = document.createElement('div');
@@ -112,7 +122,7 @@
                     updateMilestones();
                 })
                 div.appendChild(complete_progress_update_button);
-
+            }
                 contentdiv.innerHTML = '';
                 contentdiv.appendChild(div);
 
