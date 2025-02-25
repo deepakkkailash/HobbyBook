@@ -79,7 +79,7 @@ class User(UserMixin):
     def getHobbies(self):
         conn = Connect()
         cursor = conn.getcursor()
-        cursor.execute('SELECT hobbies.hobbyname,hobbies.hobbytype,user_hobbies.progress,user_hobbies.isprogresscheckActive from hobbies inner join user_hobbies on user_hobbies.hobbyname=hobbies.hobbyname where user_hobbies.username=?',(self.props['username'],))
+        cursor.execute('SELECT hobbies.hobbyname,hobbies.hobbytype,user_hobbies.progress,user_hobbies.isprogresscheckActive,user_hobbies.hobbycompleted from hobbies inner join user_hobbies on user_hobbies.hobbyname=hobbies.hobbyname where user_hobbies.username=?',(self.props['username'],))
 
         hobbies = [dict(i) for i in cursor.fetchall()]
         del conn
@@ -89,7 +89,8 @@ class User(UserMixin):
         conn = Connect()
         cursor = conn.getcursor()
         milestone1,milestone2,milestone3,milestone4,milestone5 = milestones
-        cursor.execute('Insert into user_hobbies(username,hobbyname,progress,isprogresscheckActive,milestone1,milestone2,milestone3,milestone4,milestone5,HOBBYCOMPLETED) values(?,?,?,?,?,?,?,?,?,?)',(self.props['username'],hobbyname,0,0,milestone1,milestone2,milestone3,milestone4,milestone5,'No'))
+
+        cursor.execute('Insert into user_hobbies( username,hobbyname,progress,isprogresscheckActive,milestone1,milestone2,milestone3,milestone4,milestone5,HOBBYCOMPLETED) values(?,?,?,?,?,?,?,?,?,?)',(self.props['username'],hobbyname,0,0,milestone1,milestone2,milestone3,milestone4,milestone5,'No'))
         conn.commit()
         del conn
         return 200
@@ -103,14 +104,21 @@ class User(UserMixin):
     def acceptfriend(self,friendusername):
         conn = Connect()
         cursor = conn.getcursor()
-        cursor.execute('''UPDATE FRIENDSHIPS SET STATUS='FRIENDS' WHERE USERNAME1=? and USERNAME2=?''',(self.props['username'],friendusername))
+        cursor.execute('''UPDATE FRIENDSHIPS SET STATUS='FRIENDS'
+        WHERE (USERNAME1=? and USERNAME2=?) OR (USERNAME1=? AND USERNAME2=?)''',(self.props['username'],friendusername,friendusername,self.props['username']))
         conn.commit()
         del conn
         return 200
-    def ShowAllFriends(self):
+    def get_friends(self):
         conn = Connect()
         cursor = conn.getcursor()
-        cursor.execute('SELECT CASE WHEN USERNAME1=? THEN USERNAME2 WHEN USERNAME2=? THEN USERNAME1 END FROM FRIENDSHIPS WHERE STATUS=?',(self.props['username'], self.props['username'],'FRIENDS'))
+        cursor.execute("""
+             SELECT 
+        CASE
+           WHEN username1 = ? THEN username2
+           WHEN username2 = ? THEN username1
+        END from friendships WHERE   (USERNAME1=? OR USERNAME2=?) AND STATUS=?;
+        """,(self.props['username'], self.props['username'],self.props['username'], self.props['username'],'FRIENDS'))
         res = cursor.fetchall()
         return res
 
@@ -213,8 +221,3 @@ class Hobby:
         return details
 
 
-conn = Connect()
-cursor = conn.getcursor()
-cursor.execute('SELECT * FROM USERS INNER JOIN USER_HOBBIES ON USERS.USERNAME=USER_HOBBIES.USERNAME')
-for i in cursor.fetchall():
-    print(dict(i))

@@ -558,8 +558,24 @@ video {
   position: static;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
+.mt-\[60px\] {
+  margin-top: 60px;
+}
+
+.mt-\[20px\] {
+  margin-top: 20px;
+}
+
+.mt-\[10px\] {
+  margin-top: 10px;
+}
+
+.mt-\[5px\] {
+  margin-top: 5px;
+}
+
+.mt-\[0px\] {
+  margin-top: 0px;
 }
 
 .block {
@@ -610,20 +626,6 @@ video {
   height: 80%;
 }
 
-.h-fit {
-  height: -moz-fit-content;
-  height: fit-content;
-}
-
-.h-\[120vh\] {
-  height: 120vh;
-}
-
-.h-max {
-  height: -moz-max-content;
-  height: max-content;
-}
-
 .w-32 {
   width: 8rem;
 }
@@ -667,15 +669,6 @@ video {
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
-}
-
-.w-\[120vw\] {
-  width: 120vw;
-}
-
-.w-max {
-  width: -moz-max-content;
-  width: max-content;
 }
 
 @keyframes colorchangePurpletoWhite {
@@ -764,12 +757,20 @@ video {
   gap: 10px;
 }
 
+.gap-\[20px\] {
+  gap: 20px;
+}
+
 .gap-\[40px\] {
   gap: 40px;
 }
 
 .gap-\[5px\] {
   gap: 5px;
+}
+
+.gap-\[30px\] {
+  gap: 30px;
 }
 
 .rounded-full {
@@ -808,6 +809,11 @@ video {
 .bg-purple-950 {
   --tw-bg-opacity: 1;
   background-color: rgb(59 7 100 / var(--tw-bg-opacity, 1));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-700 {
@@ -874,6 +880,10 @@ video {
   padding: 80px;
 }
 
+.p-\[30px\] {
+  padding: 30px;
+}
+
 .pl-\[20px\] {
   padding-left: 20px;
 }
@@ -924,6 +934,11 @@ video {
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
+.text-green-500 {
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity, 1));
+}
+
 .text-purple-500 {
   --tw-text-opacity: 1;
   color: rgb(168 85 247 / var(--tw-text-opacity, 1));
@@ -937,11 +952,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.text-green-500 {
-  --tw-text-opacity: 1;
-  color: rgb(34 197 94 / var(--tw-text-opacity, 1));
 }
 
 .opacity-\[0\.5\] {
@@ -989,6 +999,14 @@ video {
 
 .hover\:cursor-pointer:hover {
   cursor: pointer;
+}
+
+.hover\:opacity-\[0\.95\]:hover {
+  opacity: 0.95;
+}
+
+.hover\:opacity-\[0\.50\]:hover {
+  opacity: 0.50;
 }
 
 .hover\:shadow-md:hover {

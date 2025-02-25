@@ -1,15 +1,14 @@
 import json
-
 from flask import Blueprint,render_template,Response
 from flask_login import current_user,login_required
 from Models import Hobby
 views = Blueprint('views',__name__)
 
+app_specific_path = 'UserFunctionTemplates_APPSPECIFIC'
 @views.route('/')
 def index():
     return render_template('index.html')
 
-app_specific_path = 'UserFunctionTemplates_APPSPECIFIC'
 @views.route('/auth/<what>')
 def authview(what):
     if(what=='login'):
@@ -70,7 +69,7 @@ def HobbyForm():
 @views.route('/homepage/viewuserprogress/setProgressCheck')
 def setProgressCheck():
     hobbies = current_user.getHobbies()
-    hobbies = list(filter(lambda a:a['isprogresscheckActive']==0, hobbies))
+    hobbies = list(filter(lambda a:a['ISPROGRESSCHECKACTIVE']==0, hobbies))
     lenofhobbies = len(hobbies)
     response = Response(render_template(f'{app_specific_path}/SettingNewProgressCheck.html',hobbies=hobbies,len=lenofhobbies))
     return response
@@ -80,7 +79,7 @@ def setProgressCheck():
 def seeProgressCheck():
     hobbies = current_user.getHobbies()
 
-    with_progress_check = list(filter(lambda a:a['isprogresscheckActive']==1,hobbies))
+    with_progress_check = list(filter(lambda a:a['ISPROGRESSCHECKACTIVE']==1,hobbies))
     print(with_progress_check)
     response = Response(render_template(f'{app_specific_path}/ViewAvailableProgress.html',hobbies=with_progress_check,length=len(with_progress_check)))
     return response
@@ -90,3 +89,14 @@ def seeProgressCheck():
 def errorpage():
     return -100
 
+
+
+@views.route('/homepage/viewuserfriends/viewfriends')
+def viewfriends():
+    all_friends = current_user.get_friends()
+    response = Response(render_template(f'{app_specific_path}/listoffriends.html',friends=all_friends))
+    return response
+
+@views.route('/homepage/viewuserfriends/viewfriendsuggestions')
+def viewfriendsuggestions():
+    return

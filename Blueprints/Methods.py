@@ -66,3 +66,5 @@ def updatemilestoneprogress():
         return json.dumps({'statuscode':200})
     else:
         return json.dumps({'statuscode':500})
+
+

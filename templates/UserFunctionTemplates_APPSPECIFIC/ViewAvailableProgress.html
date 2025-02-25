@@ -1,25 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if length==0 %}
 <div class="flex flex-col justify-center items-center bg-black  h-[100vh] w-[100vw]  gap-[10px] " id="FULLCONTENT">
-    {% if length==0 %}
     <div class="flex flex-col items-center gap-[10px]">
         <h1 class="text-red-500 font-bold text-5xl font-mono">No Hobbies have Progress Check Enabled</h1>
         <p class="font-bold text-lg font-mono text-white">Click <a href="{{url_for('views.setProgressCheck')}}" class="animate-pulse text-red-500" >here</a> to set a new progress check on a hobby</p>
     </div>
-    {% else %}
-        <div class="flex flex-col items-center gap-[10px]">
+</div>
+{% else %}
+<div class="flex flex-col justify-start bg-black  h-[100vh] w-[100vw]  gap-[10px] " id="FULLCONTENT">
+
         {% for i in hobbies %}
-            {% if i['progress']>=0.0 %}
-                        <h1 class="text-red-500 font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
-                        <button id="{{i['hobbyname']}}"class=" UpdateProgressBtn font-bold text-lg font-mono text-white">{{i['progress']}}</button>
+            {% if i['PROGRESS']>=0.0 and i['HOBBYCOMPLETED']!='COMPLETED' %}
+                    <div class="bg-red-500 rounded-lg p-[40px] flex flex-col items-center w-fit mt-[5px]">
+                        <h1 class="text-white font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
+                        <button id="{{i['hobbyname']}}" class=" UpdateProgressBtn font-bold text-lg font-mono text-white">{{i['PROGRESS']}}</button>
+                    </div>
+            {% elif i['HOBBYCOMPLETED']=='COMPLETED' %}
+                <div class="bg-green-500 rounded-lg p-[40px] flex flex-col items-center w-fit mt-[5px]">
+                    <h1 class="text-white font-bold text-5xl font-mono">{{i['hobbyname']}}</h1>
+                    <button id="{{i['hobbyname']}}" class=" UpdateProgressBtn font-bold text-lg font-mono text-white">{{i['progress']}}</button>
+                </div>
 
             {% endif %}
 
-            {% endfor %}
-            </div>
-    {% endif %}
+        {% endfor %}
 </div>
+{% endif %}
+
 
 <script>
     let updateProgressButtons = document.getElementsByClassName('UpdateProgressBtn');

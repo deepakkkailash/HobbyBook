@@ -2,14 +2,11 @@
 
 {% block content %}
 
-<div class="flex flex-col justify-center  h-[100vh] w-[100vw] bg-black gap-[10px]" id="FULLCONTENT">
-        <div class="flex flex-row gap-[10px] ">
-            {% for i in user.props['friends'] %}
-                <div class="rounded-lg pl-[20px] pr-[20px] font-bold font-mono text-black bg-white flex flex-row">
-                    {{i.props['name']}}
-                </div>
-            {% endfor %}
-        </div>
+<div class="flex flex-col justify-center items-center h-[100vh] w-[100vw] bg-black gap-[10px]" id="FULLCONTENT">
+    <div class="flex flex-row gap-[30px]">
+            <a href='{{url_for("views.viewfriends")}}' class="rounded-lg bg-red-500 p-[30px] flex flex-col items-center justify-center text-white font-bold font-mono hover:opacity-[0.50] hover:cursor-pointer">View Friends</a>
+            <a href='{{url_for("views.viewfriendsuggestions")}}' class="rounded-lg bg-red-500 p-[30px] flex flex-col items-center justify-center text-white font-bold font-mono hover:opacity-[0.50] hover:cursor-pointer">Add New Friend</a>
+    </div>
 </div>
 
 {% endblock %}
