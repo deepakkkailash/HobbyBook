@@ -194,7 +194,7 @@ class Hobby:
         cursor.execute('SELECT * from Hobbies')
         res = cursor.fetchall()
         temp = [dict(i) for i in res]
-        hobbies = [i['hobbyname'] for i in temp]
+        hobbies = [i['hobbyname']  for i in temp if i['hobbyname']!='' and i['hobbyname'][0].isalpha()]
         del conn
         return hobbies[1:]
 
