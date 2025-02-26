@@ -99,4 +99,18 @@ def viewfriends():
 
 @views.route('/homepage/viewuserfriends/viewfriendsuggestions')
 def viewfriendsuggestions():
-    return
+    response = Response(render_template(f'{app_specific_path}/findfriends.html'))
+    return response
+
+
+@views.route('/homepage/viewuserfriends/viewfriendsuggestions/viewfriendsbyname')
+def viewfriendsbyname():
+    return 'ok'
+
+@views.route('/homepage/viewuserfriends/viewfriendsuggestions/viewfriendsbyname')
+def viewfriendsbyhobby():
+    return 'ok'
+
+@views.route('/homepage/viewuserfriends/viewfriendsuggestions/viewfriendsbyname')
+def viewfriendsbyrandom():
+    return 'ok'
