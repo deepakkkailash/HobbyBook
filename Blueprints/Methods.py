@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint,request,redirect,url_for
 from flask_login import current_user,login_required
-from Models import Hobby
+from Models import Hobby,User
 methods = Blueprint('methods',__name__)
 
 @methods.route('/addHobbyforUser',methods=['POST'])
@@ -68,3 +68,27 @@ def updatemilestoneprogress():
         return json.dumps({'statuscode':500})
 
 
+@methods.route('/viewfriendsbyname',methods=['POST'])
+@login_required
+def searchfriendbyname():
+    name = request.json.get('name')
+    user = User.searchuserbyusername(name)
+    if(user['username']==current_user.props['username']):
+        return json.dumps({'user':'self'})
+    return json.dumps({'user':user})
+
+@methods.route('/viewfriendsbyname',methods=['POST'])
+@login_required
+def searchfriendsbyhobby():
+    list_of_users = User.searchbyhobby(request.json.get('hobby','*'))
+    for i in list_of_users:
+        if(i['username']==current_user.props['username']):
+            list_of_users.pop(list_of_users.index(i))
+
+    return json.dumps({'FriendSuggestions':list_of_users})
+
+@methods.route('/viewfriendsbyname',methods=['GET'])
+@login_required
+def searchrandompeople():
+    list_of_random_users = User.searchrandomusers()
+    return 'ok'

@@ -1,7 +1,7 @@
 import sqlite3
 import bcrypt
 from flask_login import login_user, UserMixin
-
+import random
 
 class Connect:
     def __init__(self):
@@ -175,6 +175,40 @@ class User(UserMixin):
             return True
         except BaseException:
             return False
+
+        @staticmethod
+        def searchuserbyusername(username):
+            conn = Connect()
+            cursor = conn.getcursor()
+            cursor.execute('SELECT username,name,noofhobbies from Users where username=?',(username,))
+            res = cursor.fetchone()
+            if(res!=None):
+                return dict(res)
+            return None
+
+        @staticmethod
+        def searchusersbyhobby(hobbyname):
+            conn = Connect()
+            cursor = conn.getcursor()
+            cursor.execute('SELECT users.username, users.name,users.noofhobbies from user_hobbies innerjoin username on users.username=user_hobbies.username where hobbyname=?',(hobbyname,))
+            res = cursor.fetchall()
+            res = [dict(i) for i in res]
+            return res
+
+        @staticmethod
+        def searchrandomusers():
+            conn  = Connect()
+            cursor = conn.getcursor()
+            cursor.execute('SELECT username,name,noofhobbies from users')
+            res = cursor.fetchall()
+            res = [dict(i) for i in res]
+            out = []
+            for i in range(10):
+                temp = random.choice(res)
+                while(temp in out):
+                    temp = random.choice(res)
+                out.append(temp)
+            return out
 class Hobby:
     def __init__(self):
         None
