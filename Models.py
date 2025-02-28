@@ -256,7 +256,7 @@ class Hobby:
         return details
 
 
-def admin(query,param_tuple=None,type):
+def admin(query,type,param_tuple=None):
     conn = Connect()
     cursor = conn.getcursor()
     if(param_tuple):

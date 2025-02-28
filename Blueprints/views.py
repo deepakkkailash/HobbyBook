@@ -103,10 +103,12 @@ def viewfriends():
 @login_required
 def viewfriendsuggestions():
     response = Response(render_template(f'{app_specific_path}/findfriends.html'))
+
     return response
 
 @views.route('/homepage/viewuserfriends/viewuseravailable')
 @login_required
 def viewuseravailable():
     users_available = session.get('usersavailable',[])
+    del session['usersavailable']
     return Response(render_template(f'{app_specific_path}/viewuseravailable.html',users=users_available))
