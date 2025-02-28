@@ -176,8 +176,8 @@ class User(UserMixin):
         except BaseException:
             return False
 
-        @staticmethod
-        def searchuserbyusername(username):
+    @staticmethod
+    def searchuserbyusername(username):
             conn = Connect()
             cursor = conn.getcursor()
             cursor.execute('SELECT username,name,noofhobbies from Users where username=?',(username,))
@@ -186,17 +186,18 @@ class User(UserMixin):
                 return dict(res)
             return None
 
-        @staticmethod
-        def searchusersbyhobby(hobbyname):
+
+    @staticmethod
+    def searchbyhobby(hobbyname):
             conn = Connect()
             cursor = conn.getcursor()
-            cursor.execute('SELECT users.username, users.name,users.noofhobbies from user_hobbies innerjoin username on users.username=user_hobbies.username where hobbyname=?',(hobbyname,))
+            cursor.execute('SELECT users.username, users.name,users.noofhobbies from user_hobbies inner join users on users.username=user_hobbies.username where hobbyname=?',(hobbyname,))
             res = cursor.fetchall()
             res = [dict(i) for i in res]
             return res
 
-        @staticmethod
-        def searchrandomusers():
+    @staticmethod
+    def searchrandomusers():
             conn  = Connect()
             cursor = conn.getcursor()
             cursor.execute('SELECT username,name,noofhobbies from users')
@@ -254,4 +255,13 @@ class Hobby:
         del conn
         return details
 
+
+def admin(query,param_tuple=None,type):
+    conn = Connect()
+    cursor = conn.getcursor()
+    if(param_tuple):
+        cursor.execute(query,param_tuple)
+    if(type=='select'):
+        return cursor.fetchall()
+    return None
 

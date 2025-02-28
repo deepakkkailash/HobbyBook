@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint,render_template,Response
+from flask import Blueprint,render_template,Response,session
 from flask_login import current_user,login_required
 from Models import Hobby
 views = Blueprint('views',__name__)
@@ -92,14 +92,21 @@ def errorpage():
 
 
 @views.route('/homepage/viewuserfriends/viewfriends')
+@login_required
 def viewfriends():
     all_friends = current_user.get_friends()
     response = Response(render_template(f'{app_specific_path}/listoffriends.html',friends=all_friends))
+
     return response
 
 @views.route('/homepage/viewuserfriends/viewfriendsuggestions')
+@login_required
 def viewfriendsuggestions():
     response = Response(render_template(f'{app_specific_path}/findfriends.html'))
     return response
 
-
+@views.route('/homepage/viewuserfriends/viewuseravailable')
+@login_required
+def viewuseravailable():
+    users_available = session.get('usersavailable',[])
+    return Response(render_template(f'{app_specific_path}/viewuseravailable.html',users=users_available))

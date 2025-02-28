@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint,request,redirect,url_for
+from flask import Blueprint,request,redirect,url_for,session
 from flask_login import current_user,login_required
 from Models import Hobby,User
 methods = Blueprint('methods',__name__)
@@ -75,19 +75,24 @@ def searchfriendbyname():
     user = User.searchuserbyusername(name)
     if(user['username']==current_user.props['username']):
         return json.dumps({'user':'self'})
-    return json.dumps({'user':user})
+    session['usersavailable'] = [user]
+    return json.dumps({'user':'not_self','redirect':url_for('views.viewuseravailable')})
 
-@methods.route('/viewfriendsbyname',methods=['POST'])
+@methods.route('/viewfriendsbyhobby',methods=['POST'])
 @login_required
 def searchfriendsbyhobby():
-    list_of_users = User.searchbyhobby(request.json.get('hobby','*'))
+    list_of_users = list(filter(lambda a:a!=None, User.searchbyhobby(request.json.get('hobby','*'))))
+    print(request.json)
     for i in list_of_users:
         if(i['username']==current_user.props['username']):
             list_of_users.pop(list_of_users.index(i))
+    print(list_of_users)
+    if(len(list_of_users)==0):
+        return json.dumps({'FriendSuggestions':None})
+    session['usersavailable']=list_of_users
+    return json.dumps({'FriendSuggestions':'not_self','redirect':url_for('views.viewuseravailable')})
 
-    return json.dumps({'FriendSuggestions':list_of_users})
-
-@methods.route('/viewfriendsbyname',methods=['GET'])
+@methods.route('/viewfriendsrandomly',methods=['GET'])
 @login_required
 def searchrandompeople():
     list_of_random_users = User.searchrandomusers()
