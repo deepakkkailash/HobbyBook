@@ -255,6 +255,15 @@ class Hobby:
         del conn
         return details
 
+    @staticmethod
+    def getrandom():
+        conn= Connect()
+        cursor = conn.getcursor()
+
+        cursor.execute('SELECT hobbyname from Hobbies where hobbyname  GLOB "[a-zA-Z]*" order by random() limit 1;')
+        hobby = dict(cursor.fetchone())
+        return hobby
+
 
 def admin(query,type,param_tuple=None):
     conn = Connect()

@@ -2,16 +2,54 @@
 
 {% block content %}
 <div class="flex flex-col justify-center items-center bg-black  h-[100vh] w-[100vw]  gap-[10px] " id="FULLCONTENT">
-    <div class="flex flex-row justify-center gap-[10px] w-[100%]">
+    <div class="flex flex-row justify-center gap-[10px] w-[100%]" id="hobbyspace">
             <input id='inpvalue' type="text" class="w-[50%] rounded-lg p-[20px] bg-white text-black font-bold font-mono" autocomplete="False">
             <button id='searchbtn' class="flex flex-col items-center justify-center p-[10px] font-bold bg-green-500 text-white rounded-lg"><img src="{{url_for('static',filename='assets/SearchThings.png')}}" class="w-[30px] h-[30px] hover:animate-pulse"/></button>
     </div>
+    <button id='RecommendHobby' class="bg-red-700 p-[30px] text-white font-bold font-mono rounded-lg hover:animate-pulse">Recommend A Hobby</button>
+
 </div>
 
 <script>
     let btn = document.getElementById('searchbtn');
     let inpvalue = document.getElementById('inpvalue');
     let content = document.getElementById('FULLCONTENT');
+       let temp = hobbyspace.innerHTML;
+    let recommend = document.getElementById('RecommendHobby');
+
+    recommend.addEventListener('click', async ()=>{
+        let res = await fetch('{{url_for('methods.recommendahobby')}}',{
+            method:'GET'
+        })
+        let data = await res.json();
+
+
+        hobbyspace.innerHTML = ''
+
+        let div = document.createElement('div');
+        div.classList.add('flex','flex-row','gap-[10px]');
+        let h1 = document.createElement('h1');
+        h1.classList.add('font-mono','font-bold','text-red-700','text-3xl');
+
+        h1.innerText = data.hobby.hobbyname;
+
+        let goback = document.createElement('button');
+        goback.classList.add('btnclass');
+
+        goback.innerText = 'Bring me the search bar!!!'
+
+        goback.addEventListener('click',()=>{
+            hobbyspace.innerHTML = temp;
+        })
+        div.appendChild(h1);
+        div.appendChild(goback);
+
+        hobbyspace.appendChild(div);
+
+        console.log(temp);
+
+
+    })
     btn.addEventListener('click', async ()=>{
         if(inpvalue.value==''){
             alert('Please Enter a Hobby to search for');

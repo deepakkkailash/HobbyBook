@@ -97,3 +97,9 @@ def searchfriendsbyhobby():
 def searchrandompeople():
     list_of_random_users = User.searchrandomusers()
     return 'ok'
+
+
+@methods.route('/recommendarandomhobby')
+def recommendahobby():
+    hobby = Hobby.getrandom()
+    return json.dumps({'hobby':hobby})
