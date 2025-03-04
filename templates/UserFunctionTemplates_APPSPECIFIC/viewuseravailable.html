@@ -1,16 +1,29 @@
 
 
 
+{% if trigger!='username' %}
 <div class="bg-black w-[100vw] h-[100vh]">
     <div class="flex flex-row gap-[10px] justify-start overflow-auto">
     {% for i in users %}
-         <div class="rounded-lg bg-white p-[30px] flex flex-col items-center mt-5">
-                    <h1 class="font-mono font-bold text-green-900 text-2xl">{{i['name']}}</h1>
+         <div class="rounded-lg border border-white p-[30px] flex flex-col items-center mt-5 gap-[5px]">
+                    <h1 class="font-mono font-bold text-red-900 text-2xl">{{i['name']}}</h1>
                     <h3 class="font-mono font-bold text-black text-lg">{{i['username']}}</h3>
-                    <h6 class="font-mono font-bold text-red-900 text-sm">{{i['NOOFHOBBIES']}}</h6>
+                    <h6 class="font-mono font-bold text-green-900 text-sm">{{i['NOOFHOBBIES']}}</h6>
                     <button id='{{i["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
          </div>
     {% endfor %}
         </div >
 </div>
+{% else %}
+    <div class="bg-black w-[100vw] h-[100vh] flex flex-col items-center justify-center">
+
+            <div class="rounded-lg p-[30px] flex flex-col items-center gap-[20px]  mt-5 border border-dashed border-red-700">
+                    <h1 class="font-mono font-bold text-white text-2xl">{{user['name']}}</h1>
+                    <h3 class="font-mono font-bold text-red-900 text-lg">{{user['username']}}</h3>
+                    <h6 class="font-mono font-bold text-green-900 text-sm">{{user['NOOFHOBBIES']}}</h6>
+                    <button id='{{user["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
+         </div>
+    </div>
+
+{% endif %}
 

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="flex flex-row gap-[0px] w-[100vw] h-[100vh] bg-black" id="fullcontent">
+        <div class="h-[100vh] w-[33vw] border-r-[5px] border-black flex flex-col justify-center items-center bg-sky-900 font-bold font-mono text-white hover:opacity-[0.5] hover:cursor-pointer" id="byhobby">
+            <h1>Find</h1>
+            <h1>Friends</h1>
+            <h1>By</h1>
+            <h1>Hobbies</h1>
+        </div>
+          <div class="h-[100vh] w-[33vw] border-r-[5px] border-black flex flex-col justify-center items-center bg-red-900 font-bold font-mono text-white  hover:opacity-[0.5] hover:cursor-pointer" id="byname">
+            <h1>Find</h1>
+            <h1>Friends</h1>
+            <h1>By</h1>
+            <h1>USERNAME</h1>
+        </div>
+        <div class="h-[100vh] w-[33vw] border-r-[5px] border-black flex flex-col justify-center items-center bg-green-900 font-bold font-mono text-white  hover:opacity-[0.5] hover:cursor-pointer" id="byrandom">
+            <h1>Find</h1>
+            <h1>Friends</h1>
+            <h1>By</h1>
+            <h1>Random</h1>
+        </div>
+</div>
+
+
+<script>
+    let byname = document.getElementById('byname');
+    let byhobby = document.getElementById('byhobby');
+    let byrandom = document.getElementById('byrandom');
+
+    let fullcontent = document.getElementById('fullcontent');
+    byname.addEventListener('click',function handleClick(){
+            byname.removeEventListener('click',handleClick);
+            let div = document.createElement('div');
+            div.classList.add('flex','flex-col','items-center','gap-[10px]');
+
+            let label = document.createElement('label');
+            label.innerText = 'Name of the Friend'
+            label.classList.add('font-mono','font-bold','text-white');
+            let inpelem = document.createElement('input');
+            inpelem.classList.add('font-mono','font-bold','text-black','bg-white','p-[20px]','rounded-lg','w-[100%]');
+
+            let subbutton = document.createElement('button');
+            subbutton.classList.add('btnclass');
+
+            subbutton.innerText = 'search'
+            subbutton.addEventListener('click',async ()=>{
+                        let res = await fetch('{{url_for('methods.searchfriendbyname')}}',{
+                            method:"POST",
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body:JSON.stringify({'name':inpelem.value})
+                        })
+
+                        let data = await res.json()
+
+                        console.log(data);
+                           if(data.user=='self'){
+                                alert('No more alone time search a diff user lol');
+
+                        }else{
+                                    fullcontent.innerHTML = data.content;
+
+                        }
+
+            })
+            div.appendChild(label);
+            div.appendChild(inpelem);
+            div.appendChild(subbutton);
+
+            byname.innerHTML = ''
+            byname.appendChild(div);
+
+
+    })
+
+    byhobby.addEventListener('click',function handleClick(){
+        byhobby.removeEventListener('click',handleClick);
+        let div = document.createElement('div');
+            div.classList.add('flex','flex-col','items-center','gap-[10px]');
+
+            let label = document.createElement('label');
+            label.innerText = 'Hobby of the Friend'
+            label.classList.add('font-mono','font-bold','text-white');
+            let inpelem = document.createElement('input');
+            inpelem.type='text';
+            inpelem.classList.add('font-mono','font-bold','text-black','bg-white','p-[20px]','rounded-lg','w-[100%]');
+
+            let subbutton = document.createElement('button');
+            subbutton.classList.add('btnclass');
+            subbutton.innerText = 'search'
+            subbutton.addEventListener('click',async ()=>{
+                        console.log('hi');
+                        let res = await fetch('{{url_for('methods.searchfriendsbyhobby')}}',{
+                            method:"POST",
+                            headers:{
+                                'Content-Type':'application/json'
+                            },
+                            body:JSON.stringify({'hobby':inpelem.value})
+                        })
+
+                        let data = await res.json()
+                        console.log(data);
+                        if(data.FriendSuggestions==null){
+                                alert('No Friends for this hobby');
+
+                        }else{
+                             fullcontent.innerHTML = data.content;
+                        }
+            })
+            div.appendChild(label);
+            div.appendChild(inpelem);
+            div.appendChild(subbutton);
+
+            byhobby.innerHTML = ''
+            byhobby.appendChild(div);
+    })
+
+    byrandom.addEventListener('click',()=>{
+
+
+
+    })
+</script>
+{%endblock%}

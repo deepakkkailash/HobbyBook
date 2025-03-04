@@ -78,7 +78,7 @@ def searchfriendbyname():
     if(user['username']==current_user.props['username']):
         return json.dumps({'user':'self'})
 
-    return json.dumps({'user':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=[user])})
+    return json.dumps({'user':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',user=user,trigger='username')})
 
 
 @methods.route('/viewfriendsbyhobby',methods=['POST'])
@@ -92,14 +92,14 @@ def searchfriendsbyhobby():
     if(len(list_of_users)==0):
         return json.dumps({'FriendSuggestions':None})
 
-    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users)})
+    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users,trigger='hobby')})
 
 @methods.route('/viewfriendsrandomly',methods=['GET'])
 @login_required
 def searchrandompeople():
     list_of_random_users = User.searchrandomusers()
 
-    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_random_users)})
+    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_random_users,trigger='random')})
 
 
 
