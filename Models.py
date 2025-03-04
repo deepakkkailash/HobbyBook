@@ -200,16 +200,10 @@ class User(UserMixin):
     def searchrandomusers():
             conn  = Connect()
             cursor = conn.getcursor()
-            cursor.execute('SELECT username,name,noofhobbies from users')
+            cursor.execute('SELECT username,name,noofhobbies from users order by random() limit 5')
             res = cursor.fetchall()
             res = [dict(i) for i in res]
-            out = []
-            for i in range(10):
-                temp = random.choice(res)
-                while(temp in out):
-                    temp = random.choice(res)
-                out.append(temp)
-            return out
+            return res
 class Hobby:
     def __init__(self):
         None

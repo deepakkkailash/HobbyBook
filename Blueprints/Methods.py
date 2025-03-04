@@ -1,10 +1,12 @@
 import json
 
-from flask import Blueprint,request,redirect,url_for,session
+from flask import Blueprint,request,redirect,url_for,session,render_template
 from flask_login import current_user,login_required
 from Models import Hobby,User
 methods = Blueprint('methods',__name__)
 
+
+app_specific_path = 'UserFunctionTemplates_APPSPECIFIC'
 @methods.route('/addHobbyforUser',methods=['POST'])
 @login_required
 def addHobby():
@@ -75,8 +77,9 @@ def searchfriendbyname():
     user = User.searchuserbyusername(name)
     if(user['username']==current_user.props['username']):
         return json.dumps({'user':'self'})
-    session['usersavailable'] = [user]
-    return json.dumps({'user':'not_self','redirect':url_for('views.viewuseravailable')})
+
+    return json.dumps({'user':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=[user])})
+
 
 @methods.route('/viewfriendsbyhobby',methods=['POST'])
 @login_required
@@ -86,20 +89,22 @@ def searchfriendsbyhobby():
     for i in list_of_users:
         if(i['username']==current_user.props['username']):
             list_of_users.pop(list_of_users.index(i))
-    print(list_of_users)
     if(len(list_of_users)==0):
         return json.dumps({'FriendSuggestions':None})
-    session['usersavailable']=list_of_users
-    return json.dumps({'FriendSuggestions':'not_self','redirect':url_for('views.viewuseravailable')})
+
+    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users)})
 
 @methods.route('/viewfriendsrandomly',methods=['GET'])
 @login_required
 def searchrandompeople():
     list_of_random_users = User.searchrandomusers()
-    return 'ok'
+
+    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_random_users)})
+
 
 
 @methods.route('/recommendarandomhobby')
+@login_required
 def recommendahobby():
     hobby = Hobby.getrandom()
     return json.dumps({'hobby':hobby})

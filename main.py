@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from Models import User
 
 
+
 app = Flask(__name__)
 
 

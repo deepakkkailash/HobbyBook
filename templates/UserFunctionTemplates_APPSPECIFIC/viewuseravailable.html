@@ -1,17 +1,16 @@
-{% extends 'base.html' %}
 
-{% block content %}
+
+
 <div class="bg-black w-[100vw] h-[100vh]">
-    <div class="flex flex-row gap-[10px] fixed top-[30%] left-[2%]">
+    <div class="flex flex-row gap-[10px] justify-start overflow-auto">
     {% for i in users %}
-         <div class="rounded-lg bg-white p-[30px] flex flex-col items-center">
+         <div class="rounded-lg bg-white p-[30px] flex flex-col items-center mt-5">
                     <h1 class="font-mono font-bold text-green-900 text-2xl">{{i['name']}}</h1>
-                     <h3 class="font-mono font-bold text-black text-lg">{{i['username']}}</h3>
+                    <h3 class="font-mono font-bold text-black text-lg">{{i['username']}}</h3>
                     <h6 class="font-mono font-bold text-red-900 text-sm">{{i['NOOFHOBBIES']}}</h6>
-
+                    <button id='{{i["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
          </div>
     {% endfor %}
         </div >
 </div>
 
-{% endblock %}

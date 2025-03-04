@@ -2,6 +2,7 @@ import json
 from flask import Blueprint,render_template,Response,session
 from flask_login import current_user,login_required
 from Models import Hobby
+
 views = Blueprint('views',__name__)
 
 app_specific_path = 'UserFunctionTemplates_APPSPECIFIC'
@@ -106,9 +107,3 @@ def viewfriendsuggestions():
 
     return response
 
-@views.route('/homepage/viewuserfriends/viewuseravailable')
-@login_required
-def viewuseravailable():
-    users_available = session.get('usersavailable',[])
-    del session['usersavailable']
-    return Response(render_template(f'{app_specific_path}/viewuseravailable.html',users=users_available))
