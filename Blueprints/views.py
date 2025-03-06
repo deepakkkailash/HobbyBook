@@ -96,7 +96,7 @@ def errorpage():
 @login_required
 def viewfriends():
     all_friends = current_user.get_friends()
-    response = Response(render_template(f'{app_specific_path}/listoffriends.html',friends=all_friends))
+    response = Response(render_template(f'{app_specific_path}/listoffriends.html',friends=all_friends,friendlen=len(all_friends)))
 
     return response
 

@@ -1,29 +1,46 @@
+{% extends 'base.html' %}
 
 
+{% block content %}
+    {% if trigger!='username' %}
 
-{% if trigger!='username' %}
-<div class="bg-black w-[100vw] h-[100vh]">
-    <div class="flex flex-row gap-[10px] justify-start overflow-auto">
-    {% for i in users %}
-         <div class="rounded-lg border border-white p-[30px] flex flex-col items-center mt-5 gap-[5px]">
-                    <h1 class="font-mono font-bold text-red-900 text-2xl">{{i['name']}}</h1>
-                    <h3 class="font-mono font-bold text-black text-lg">{{i['username']}}</h3>
-                    <h6 class="font-mono font-bold text-green-900 text-sm">{{i['NOOFHOBBIES']}}</h6>
-                    <button id='{{i["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
-         </div>
-    {% endfor %}
-        </div >
-</div>
-{% else %}
-    <div class="bg-black w-[100vw] h-[100vh] flex flex-col items-center justify-center">
+            {% if lenusers==0 %}
+                <div class="flex flex-col items-center justify-center w-[100vw] h-[100vh] bg-black">
+                    <h1 class="font-mono font-bold text-green">Its a lonely place...No One Found</h1>
+                </div>
+            {% else %}
+                <div class="bg-black h-[100vh] w-[100vw]">
+                <div class="flex flex-row gap-[10px] justify-start overflow-auto">
+                {% for i in users %}
+                     <div class="rounded-lg border border-white p-[30px] flex flex-col items-center mt-5 gap-[5px]">
+                                <h1 class="font-mono font-bold text-red-900 text-2xl">{{i['name']}}</h1>
+                                <h3 class="font-mono font-bold text-black text-lg">{{i['username']}}</h3>
+                                <h6 class="font-mono font-bold text-green-900 text-sm">{{i['NOOFHOBBIES']}}</h6>
+                                <button id='{{i["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
+                     </div>
+                {% endfor %}
+                </div >
+                    </div>
+            {% endif %}
 
-            <div class="rounded-lg p-[30px] flex flex-col items-center gap-[20px]  mt-5 border border-dashed border-red-700">
-                    <h1 class="font-mono font-bold text-white text-2xl">{{user['name']}}</h1>
-                    <h3 class="font-mono font-bold text-red-900 text-lg">{{user['username']}}</h3>
-                    <h6 class="font-mono font-bold text-green-900 text-sm">{{user['NOOFHOBBIES']}}</h6>
-                    <button id='{{user["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
-         </div>
-    </div>
 
-{% endif %}
+    {% else %}
 
+
+        <div class="bg-black w-[100vw] h-[100vh] flex flex-col items-center justify-center">
+                {% if user=='self' %}
+                        <h1 class="font-mono font-bold text-green">Its a lonely place...You have just searched for yourself</h1>
+                {% else %}
+                <div class="rounded-lg p-[30px] flex flex-col items-center gap-[20px]  mt-5 border border-dashed border-red-700">
+                        <h1 class="font-mono font-bold text-white text-2xl">{{user['name']}}</h1>
+                        <h3 class="font-mono font-bold text-red-900 text-lg">{{user['username']}}</h3>
+                        <h6 class="font-mono font-bold text-green-900 text-sm">{{user['NOOFHOBBIES']}}</h6>
+                        <button id='{{user["username"]}}' class="addfriendbutton btnclass hover:opacity-[0.5]">Add</button>
+             </div>
+                {% endif %}
+        </div>
+
+    {% endif %}
+
+
+{% endblock %}

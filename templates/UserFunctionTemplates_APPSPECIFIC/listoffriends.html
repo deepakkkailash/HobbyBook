@@ -2,6 +2,25 @@
 
 {% block content %}
 
+<div class="bg-black w-[100vw] h-[100vh] flex flex-col justify-center items-center overflow-auto">
+        {% if friendlen == 0 %}
+            <div class="flex flex-col items-center">
+                 <h1 class="font-mono text-3xl text-green-500 font-bold">No Friends found</h1>
+                <span class="font-mono text-sm text-red-500 font-bold">But dont worry <a class="text-sky-500 " href="{{url_for('views.viewfriendsuggestions')}}">make new friends here</a></span>
+            </div>
+        {% else %}
+            <div class="bg-white w-[40vw] h-[60vh] rounded-lg flex flex-col items-center gap-[40px]">
+                        <h3 class="font-mono font-bold text-red-500 text-lg">{{friends[0]['name']}}</h3>
+                        <div class="flex flex-row gap-[10px] items-center">
+                            <button onClick=goprev class="rounded-lg p-[10px] bg-red-500 text-white"><-</button>
+                            <button onClick=gonext class="rounded-lg p-[10px] bg-green-500 text-white">-></button>
+                        </div>
+            </div>
+        {% endif %}
+</div>
+<script>
+
+</script>
 
 
 {% endblock %}

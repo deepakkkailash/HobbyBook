@@ -73,33 +73,33 @@ def updatemilestoneprogress():
 @methods.route('/viewfriendsbyname',methods=['POST'])
 @login_required
 def searchfriendbyname():
-    name = request.json.get('name')
+    name = request.form.get('name')
     user = User.searchuserbyusername(name)
     if(user['username']==current_user.props['username']):
-        return json.dumps({'user':'self'})
+        return render_template(f'{app_specific_path}/viewuseravailable.html',user='self',trigger='username')
 
-    return json.dumps({'user':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',user=user,trigger='username')})
+    return render_template(f'{app_specific_path}/viewuseravailable.html',user=user,trigger='username')
 
 
 @methods.route('/viewfriendsbyhobby',methods=['POST'])
 @login_required
 def searchfriendsbyhobby():
-    list_of_users = list(filter(lambda a:a!=None, User.searchbyhobby(request.json.get('hobby','*'))))
-    print(request.json)
+    list_of_users = list(filter(lambda a:a!=None, User.searchbyhobby(request.form.get('hobby','*'))))
+
     for i in list_of_users:
         if(i['username']==current_user.props['username']):
             list_of_users.pop(list_of_users.index(i))
     if(len(list_of_users)==0):
         return json.dumps({'FriendSuggestions':None})
 
-    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users,trigger='hobby')})
+    return render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users,trigger='hobby',lenusers=len(list_of_users))
 
 @methods.route('/viewfriendsrandomly',methods=['GET'])
 @login_required
 def searchrandompeople():
     list_of_random_users = User.searchrandomusers()
 
-    return json.dumps({'FriendSuggestions':'not_self','content':render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_random_users,trigger='random')})
+    return render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_random_users,trigger='random',lenusers=len(list_of_random_users))
 
 
 
