@@ -10,7 +10,7 @@
             </div>
         {% else %}
             <div class="bg-white w-[40vw] h-[60vh] rounded-lg flex flex-col items-center gap-[40px]">
-                        <h3 class="font-mono font-bold text-red-500 text-lg">{{friends[0]['name']}}</h3>
+                        <h3 class="font-mono font-bold text-red-500 text-lg" id="Name">{{friends[0]['name']}}</h3>
                         <div class="flex flex-row gap-[10px] items-center">
                             <button onClick=goprev class="rounded-lg p-[10px] bg-red-500 text-white"><-</button>
                             <button onClick=gonext class="rounded-lg p-[10px] bg-green-500 text-white">-></button>
@@ -19,6 +19,32 @@
         {% endif %}
 </div>
 <script>
+    let index = 0;
+    let friends = Array.from({{friends | tojson }})
+    let name = document.getElementById('Name');
+    const goprev = ()=>{
+            index--;
+            if(index<0){
+                return
+             }
+             else{
+                name.innerText = friends[index]['name'];
+            }
+
+    }
+
+    const gonext = ()=>{
+        index++;
+        if(index>=friendlen){
+            return;
+        }
+        else{
+                name.innerText = friends[index]['name'];
+        }
+    }
+
+
+
 
 </script>
 

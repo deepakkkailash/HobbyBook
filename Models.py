@@ -264,7 +264,12 @@ def admin(query,type,param_tuple=None):
     cursor = conn.getcursor()
     if(param_tuple):
         cursor.execute(query,param_tuple)
+
+    else:
+        cursor.execute(query)
+
     if(type=='select'):
-        return cursor.fetchall()
+        return [dict(i) for i in cursor.fetchall()]
+
     return None
 

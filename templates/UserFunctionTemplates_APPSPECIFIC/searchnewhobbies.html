@@ -14,6 +14,7 @@
     let btn = document.getElementById('searchbtn');
     let inpvalue = document.getElementById('inpvalue');
     let content = document.getElementById('FULLCONTENT');
+    let url = '{{url_for('methods.searchhobbydetails')}}'
        let temp = hobbyspace.innerHTML;
     let recommend = document.getElementById('RecommendHobby');
 
@@ -28,11 +29,12 @@
 
         let div = document.createElement('div');
         div.classList.add('flex','flex-row','gap-[10px]');
-        let h1 = document.createElement('h1');
+        let h1 = document.createElement('a');
         h1.classList.add('font-mono','font-bold','text-red-700','text-3xl');
 
         h1.innerText = data.hobby.hobbyname;
 
+        h1.href = url+`?hobby=${h1.innerText}`
         let goback = document.createElement('button');
         goback.classList.add('btnclass');
 

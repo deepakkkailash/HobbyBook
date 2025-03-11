@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint,request,redirect,url_for,session,render_template
+from flask import Blueprint,request,redirect,url_for,session,render_template,render_template_string
 from flask_login import current_user,login_required
 from Models import Hobby,User
 methods = Blueprint('methods',__name__)
@@ -28,15 +28,31 @@ def setCheckonHobby():
         return redirect(url_for('views.homepage'))
 
 
-@methods.route('/searchhobbydetails',methods=['POST'])
+@methods.route('/searchhobbydetails',methods=['GET','POST'])
 @login_required
 def searchhobbydetails():
-    form = request.json
-    hobby = form['hobbyname']
+    if(request.method=='GET'):
+        hobby = request.args.get('hobby')
+    else:
+        form = request.json
+        hobby = form['hobbyname']
     hobbydetails = Hobby.searchhobby(hobby)
 
+    template_string = """
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class='bg-black w-[100vw] h-[100vh] justify-center items-center flex flex-col '>
+    <h1 class='font-mono text-5xl text-white font-bold tracking-widest'>{{hobbyname}}</h1>
+    <h2 class='font-mono text-lg text-red-500 font-bold'>{{hobbytype}}</h2>
+    <h4 class='font-mono text-sm text-white font-bold'>Number of users: {{numberOfUsers}}</h4>
+    </div>
+    {% endblock %}
+                        """
     if(hobbydetails['hobbyname']!='NotFound'):
-        output = {'statusCode':200,'hobbydetails':hobbydetails}
+        if(request.method=='POST'):
+            output = {'statusCode':200,'hobbydetails':hobbydetails}
+        elif(request.method=='GET'):
+            return render_template_string(template_string,hobbyname=hobbydetails.get('hobbyname'),hobbytype=hobbydetails.get('hobbytype'),numberOfUsers=hobbydetails.get('numberOfUsers'))
     else:
         output = {'statusCode': 500, 'hobbydetails': 'No Hobby Found'}
 
@@ -89,8 +105,6 @@ def searchfriendsbyhobby():
     for i in list_of_users:
         if(i['username']==current_user.props['username']):
             list_of_users.pop(list_of_users.index(i))
-    if(len(list_of_users)==0):
-        return json.dumps({'FriendSuggestions':None})
 
     return render_template(f'{app_specific_path}/viewuseravailable.html',users=list_of_users,trigger='hobby',lenusers=len(list_of_users))
 
@@ -108,3 +122,13 @@ def searchrandompeople():
 def recommendahobby():
     hobby = Hobby.getrandom()
     return json.dumps({'hobby':hobby})
+
+@methods.route('/addfriend',methods=['POST'])
+@login_required
+def addFriend():
+    body = request.json
+    print(body)
+    if(current_user.addFriend(body['userid'])):
+        return json.dumps({'status':200})
+    else:
+        return json.dumps({'status': 500})
